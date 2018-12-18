@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import os.path as osp
+import datetime
 import time
 import click
 import math
@@ -19,6 +21,9 @@ pygame.display.set_mode((100,100))
 
 # stop the robot 
 ppi.set_velocity(0,0)
+
+now = datetime.datetime.now()
+prefix = now.strftime('%Y%m%d_%H%M%S')
 
 try:
     angle = 0
@@ -47,14 +52,17 @@ try:
                     raise KeyboardInterrupt
         
         angle = np.clip(angle, -0.5, 0.5)
-        Kd = 50
-        Ka = 50
+        Kd = 20
+        Ka = 20
         left  = int(Kd + Ka*angle)
         right = int(Kd - Ka*angle)
         
         ppi.set_velocity(left,right) 
 
-        cv2.imwrite("data/"+str(lead).zfill(6)+'%.2f'%angle+".jpg", image) 
+        base = osp.join('data/{}_{:06d}'.format(prefix, lead))
+        cv2.imwrite(base + '.jpg', image)
+        with open(base + '.txt', 'w') as f:
+            f.write('{}'.format(angle))
         lead += 1
         
         
