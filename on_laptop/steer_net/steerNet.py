@@ -13,7 +13,7 @@ class SteerNet(nn.Module):
         
         self.fc1   = nn.Linear(16*18*18,512)
         self.fc2   = nn.Linear(512,64)
-        self.fc3   = nn.Linear(64,3)
+        self.fc3   = nn.Linear(64,11)
     
     def forward(self,x):
         x = self.conv1(x)
@@ -28,7 +28,8 @@ class SteerNet(nn.Module):
         
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-        x = F.softmax(self.fc3(x),dim=1)
+        #x = F.softmax(self.fc3(x),dim=1)
+        x = self.fc3(x)
         
         return x
         

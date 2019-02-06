@@ -1,3 +1,4 @@
+import os.path as osp
 import numpy as np
 from glob import glob
 from torchvision import transforms
@@ -12,26 +13,42 @@ class SteerDataSet(Dataset):
         self.root_folder = root_folder
         self.transform = transform        
         self.img_ext = img_ext        
-        self.filenames = glob(path.join(self.root_folder,"*" + self.img_ext))            
+        self.filenames = sorted(glob(path.join(self.root_folder,"*" + self.img_ext)))
         self.totensor = transforms.ToTensor()
         
     def __len__(self):        
         return len(self.filenames)
     
     def __getitem__(self,idx):
-        f = self.filenames[idx]        
-        img = cv2.imread(f)
-        
+        img_file = self.filenames[idx]        
+        img = cv2.imread(img_file)
+        img = img[110:, :, :]
+        img = cv2.resize(img, (84, 84))
+
         if self.transform == None:
             img = self.totensor(img)
         else:
-            img = self.transform(img)   
-        
-        steering = f.split("/")[-1].split(self.img_ext)[0][6:]
+            img = self.transform(img)
+
+        base = osp.splitext(img_file)[0]
+        txt_file = base + '.txt'
+        with open(txt_file) as f:
+            steering = np.float32(f.read())
+
+        # steering = filename.split("/")[-1].split(self.img_ext)[0][6:]
         steering = np.float32(steering)        
-    
-        sample = {"image":img , "steering":steering}        
-        
+
+        # 11 class classification
+        # -0.5, -0.4, -0.3, ... 0, ..., 0.5
+        assert -0.5 <= steering <= 0.5
+        steering_class = ((steering + 0.5) * 10).round().astype(np.int64)
+
+        sample = {
+            "image": img ,
+            "steering": steering,
+            "steering_class": steering_class,
+        }
+
         return sample
 
 
