@@ -15,15 +15,15 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-echo_bold "==> Downloading data from PenguinPi"
+echo_bold "==> Downloading data from penguinpi"
 if [ "$1" = "train" ]; then
-  scp PenguinPi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/* dev_data/training_data/
+  scp penguinpi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/* dev_data/training_data/
 elif [ "$1" = "test" ]; then
-  scp PenguinPi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/* dev_data/testing_data/
+  scp penguinpi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/* dev_data/testing_data/
 else
   usage
   exit 1
 fi
 
-echo_bold "==> Removing downloaded data from PenguinPi"
-ssh PenguinPi rm -f /home/pi/RVSS2019-WS/on_robot/collect_data/data/*
+echo_bold "==> Removing downloaded data from penguinpi"
+ssh penguinpi rm -f /home/pi/RVSS2019-WS/on_robot/collect_data/data/*

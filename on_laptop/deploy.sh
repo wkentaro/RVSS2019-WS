@@ -22,10 +22,10 @@ fi
 
 MODEL_FILE=$1
 
-echo_bold "==> Uploading steerNet.py to PenguinPi"
-verbose_eval scp ./steer_net/steerNet.py PenguinPi:/home/pi/RVSS2019-WS/on_robot/deploy/steerNet.py
+echo_bold "==> Uploading steerNet.py to penguinpi"
+verbose_eval scp ./steer_net/steerNet.py penguinpi:/home/pi/RVSS2019-WS/on_robot/deploy/steerNet.py
 
-echo_bold "==> Uploading model file to PenguinPi"
-# scp ./logs/20190205_175900/model_0010.pth PenguinPi:/home/pi/RVSS2019-WS/on_robot/deploy/steerNet.pt
-# scp ./logs/20190205_183103/model_0010.pth PenguinPi:/home/pi/RVSS2019-WS/on_robot/deploy/steerNet.pt
-verbose_eval scp $MODEL_FILE PenguinPi:/home/pi/RVSS2019-WS/on_robot/deploy/steerNet.pt
+echo_bold "==> Uploading model file to penguinpi"
+# scp ./logs/20190205_175900/model_0010.pth penguinpi:/home/pi/RVSS2019-WS/on_robot/deploy/steerNet.pt
+# scp ./logs/20190205_183103/model_0010.pth penguinpi:/home/pi/RVSS2019-WS/on_robot/deploy/steerNet.pt
+verbose_eval scp $MODEL_FILE penguinpi:/home/pi/RVSS2019-WS/on_robot/deploy/steerNet.pt
