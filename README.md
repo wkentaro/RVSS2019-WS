@@ -4,3 +4,9 @@ Repo for the workshop part of the [Australian Centre for Robotic Vision Summer S
 ## The Workshop
 Train a CNN and deploy it on a mobile robot to follow a track. 
 more [details can be found here](https://sites.google.com/view/rvss2019ws/overview)
+
+## Installation
+
+```bash
+make install
+```

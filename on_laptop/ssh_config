@@ -1,0 +1,3 @@
+Host penguinpi
+  Hostname 192.168.50.5
+  User pi
