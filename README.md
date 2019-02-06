@@ -10,3 +10,33 @@ more [details can be found here](https://sites.google.com/view/rvss2019ws/overvi
 ```bash
 make install
 ```
+
+## Development
+
+```bash
+# on_robot
+ssh penguinpi
+
+cd RVSS2019-WS/on_robot/collect_data
+python3 collect.py
+```
+
+```bash
+# on_laptop
+
+cd RVSS2019-WS/on_laptop
+./download_data.sh
+
+./view_dataset.py
+
+./train.py
+./plot_loss.py logs/XXX
+
+./deploy.sh
+```
+
+```bash
+# on_robot
+cd RVSS2019-WS/on_robot/deploy
+python3 deploy0.py
+```
