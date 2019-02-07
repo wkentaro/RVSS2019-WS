@@ -7,20 +7,22 @@ import cv2
 from glob import glob
 from os import path
 
+
 class SteerDataSet(Dataset):
-    
-    def __init__(self,root_folder,img_ext = ".jpg" , transform=None):
+
+    def __init__(self, root_folder, img_ext=".jpg", transform=None):
         self.root_folder = root_folder
-        self.transform = transform        
-        self.img_ext = img_ext        
-        self.filenames = sorted(glob(path.join(self.root_folder,"*" + self.img_ext)))
+        self.transform = transform
+        self.img_ext = img_ext
+        self.filenames = sorted(
+            glob(path.join(self.root_folder, "*" + self.img_ext)))
         self.totensor = transforms.ToTensor()
-        
-    def __len__(self):        
+
+    def __len__(self):
         return len(self.filenames)
-    
-    def __getitem__(self,idx):
-        img_file = self.filenames[idx]        
+
+    def __getitem__(self, idx):
+        img_file = self.filenames[idx]
         img = cv2.imread(img_file)
         img = img[110:, :, :]
         img = cv2.resize(img, (84, 84))
@@ -36,7 +38,7 @@ class SteerDataSet(Dataset):
             steering = np.float32(f.read())
 
         # steering = filename.split("/")[-1].split(self.img_ext)[0][6:]
-        steering = np.float32(steering)        
+        steering = np.float32(steering)
 
         # 11 class classification
         # -0.5, -0.4, -0.3, ... 0, ..., 0.5
@@ -44,7 +46,7 @@ class SteerDataSet(Dataset):
         steering_class = ((steering + 0.5) * 10).round().astype(np.int64)
 
         sample = {
-            "image": img ,
+            "image": img,
             "steering": steering,
             "steering_class": steering_class,
         }
@@ -54,22 +56,21 @@ class SteerDataSet(Dataset):
 
 def test():
     transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        [transforms.ToTensor(),
+         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
-    ds = SteerDataSet("../dev_data/training_data",".jpg",transform)
+    ds = SteerDataSet("../dev_data/training_data", ".jpg", transform)
 
     print("The dataset contains %d images " % len(ds))
 
-    ds_dataloader = DataLoader(ds,batch_size=1,shuffle=True)
+    ds_dataloader = DataLoader(ds, batch_size=1, shuffle=True)
     for S in ds_dataloader:
-        im = S["image"]    
-        y  = S["steering"]
-        
+        im = S["image"]
+        y = S["steering"]
+
         print(im.shape)
         print(y)
         break
-
 
 
 if __name__ == "__main__":
