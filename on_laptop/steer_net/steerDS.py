@@ -1,11 +1,12 @@
-import os.path as osp
-import numpy as np
-from glob import glob
-from torchvision import transforms
-from torch.utils.data import Dataset, DataLoader
-import cv2
 from glob import glob
 from os import path
+import os.path as osp
+
+import cv2
+import imgaug.augmenters as iaa
+import numpy as np
+from torchvision import transforms
+from torch.utils.data import Dataset, DataLoader
 
 
 class SteerDataSet(Dataset):
@@ -44,6 +45,16 @@ class SteerDataSet(Dataset):
         steering = np.float32(steering)
 
         if self._augment:
+            seq = iaa.Sequential([
+                iaa.Sometimes(
+                    0.5,
+                    iaa.AddToHueAndSaturation(
+                        (-20, 20), from_colorspace='BGR', per_channel=True
+                    ),
+                ),
+            ])
+            img = seq.augment_image(img)
+
             flip = np.random.random() >= 0.5
             if flip:
                 img = np.ascontiguousarray(img[:, ::-1, :])
