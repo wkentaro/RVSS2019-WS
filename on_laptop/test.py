@@ -56,18 +56,26 @@ def main():
     if log_dir_or_model_file.is_file():
         model_file = args.log_dir_or_model_file
         y_true, y_pred = test(model_file)
-        accuracy = sklearn.metrics.accuracy_score(y_true, y_pred)
-        print(f'==> Testing: {model_file}, {accuracy}')
+        _, _, f1_score, _ = sklearn.metrics.precision_recall_fscore_support(
+            y_true, y_pred, average='macro'
+        )
+        # accuracy = sklearn.metrics.accuracy_score(y_true, y_pred)
+        # print(f'==> Testing: {model_file}, {accuracy}')
+        print(f'==> Testing: {model_file}, {f1_score}')
     else:
-        model_files = list(log_dir_or_model_file.glob('model_*.pth'))
-        accuracies = []
+        model_files = list(sorted(log_dir_or_model_file.glob('model_*.pth')))
+        scores = []
         for model_file in model_files:
             y_true, y_pred = test(model_file)
-            accuracy = sklearn.metrics.accuracy_score(y_true, y_pred)
-            print(f'==> Testing: {model_file}, {accuracy:.1%}')
-            accuracies.append(accuracy)
+            # accuracy = sklearn.metrics.accuracy_score(y_true, y_pred)
+            _, _, f1_score, _ = \
+                sklearn.metrics.precision_recall_fscore_support(
+                    y_true, y_pred, average='macro'
+                )
+            print(f'==> Testing: {model_file}, {f1_score:.1%}')
+            scores.append(f1_score)
 
-        index = np.argmax(accuracies)
+        index = np.argmax(scores)
         model_file = model_files[index]
         y_true, y_pred = test(model_file)
 
