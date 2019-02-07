@@ -24,7 +24,7 @@ def main():
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
-    ds = SteerDataSet("dev_data/training_data",".jpg",transform)
+    ds = SteerDataSet("dev_data/training_data",".jpg",transform, augment=True)
 
     print("The dataset contains %d images " % len(ds))
 
