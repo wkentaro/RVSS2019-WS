@@ -1,12 +1,11 @@
-from glob import glob
-from os import path
+import glob
 import os.path as osp
 
 import cv2
 import imgaug.augmenters as iaa
 import numpy as np
+from torch.utils.data import Dataset
 from torchvision import transforms
-from torch.utils.data import Dataset, DataLoader
 
 
 class SteerDataSet(Dataset):
@@ -22,7 +21,8 @@ class SteerDataSet(Dataset):
         self.transform = transform
         self.img_ext = img_ext
         self.filenames = sorted(
-            glob(path.join(self.root_folder, "*" + self.img_ext)))
+            glob.glob(osp.join(self.root_folder, "*" + self.img_ext))
+        )
         self.totensor = transforms.ToTensor()
 
         self._augment = augment
@@ -65,7 +65,7 @@ class SteerDataSet(Dataset):
         assert -0.5 <= steering <= 0.5
         steering_class = ((steering + 0.5) * 10).round().astype(np.int64)
 
-        if self.transform == None:
+        if self.transform is None:
             img = self.totensor(img)
         else:
             img = self.transform(img)
@@ -80,18 +80,21 @@ class SteerDataSet(Dataset):
 
 
 def test():
-    transform = transforms.Compose(
-        [transforms.ToTensor(),
-         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    from torch.utils.data import DataLoader
 
-    ds = SteerDataSet("../dev_data/training_data", ".jpg", transform)
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    ])
 
-    print("The dataset contains %d images " % len(ds))
+    ds = SteerDataSet('../dev_data/training_data', '.jpg', transform)
+
+    print('The dataset contains %d images' % len(ds))
 
     ds_dataloader = DataLoader(ds, batch_size=1, shuffle=True)
     for S in ds_dataloader:
-        im = S["image"]
-        y = S["steering"]
+        im = S['image']
+        y = S['steering']
 
         print(im.shape)
         print(y)
