@@ -40,3 +40,7 @@ cd RVSS2019-WS/on_laptop
 cd RVSS2019-WS/on_robot/deploy
 python3 deploy0.py
 ```
+
+## Demonstration
+
+![](https://drive.google.com/uc?id=1H8B8MHmm17IxHmpx82Gp5fhBZE7RHAfz)
