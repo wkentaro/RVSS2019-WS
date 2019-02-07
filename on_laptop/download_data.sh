@@ -26,4 +26,4 @@ else
 fi
 
 echo_bold "==> Removing downloaded data from penguinpi"
-ssh penguinpi rm -f /home/pi/RVSS2019-WS/on_robot/collect_data/data/*
+ssh penguinpi rm -f /home/pi/RVSS2019-WS/on_robot/collect_data/data/20*
