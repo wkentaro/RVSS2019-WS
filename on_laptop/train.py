@@ -24,11 +24,12 @@ def main():
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
-    ds = SteerDataSet("dev_data/training_data",".jpg",transform, augment=True)
+    ds = SteerDataSet('dev_data/training_data',
+                      '.jpg', transform, augment=True)
 
-    print("The dataset contains %d images " % len(ds))
+    print('The dataset contains %d images ' % len(ds))
 
-    ds_dataloader = DataLoader(ds,batch_size=1,shuffle=True)
+    ds_dataloader = DataLoader(ds, batch_size=1, shuffle=True)
 
     model = SteerNet()
 
@@ -53,7 +54,8 @@ def main():
             loss.backward()
             optimizer.step()
 
-            print('Epoch: {:04d}, Iteration: {:04d}, Loss: {:.4f}'.format(epoch, iteration, loss.item()))
+            print('Epoch: {:04d}, Iteration: {:04d}, Loss: {:.4f}'.format(
+                epoch, iteration, loss.item()))
             losses.append(loss.item())
 
         model_file = osp.join(out_dir, 'model_{:04d}.pth'.format(epoch))
