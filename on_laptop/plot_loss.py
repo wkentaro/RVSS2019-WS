@@ -16,8 +16,14 @@ args = parser.parse_args()
 
 
 df = pandas.read_csv(osp.join(args.log_dir, 'loss.csv'))
-loss = df.loss.values
-iterations = np.arange(len(loss))
+
+N = len(df)
+step = 20
+
+df = df.rolling(window=step, center=True).mean()
+
+iterations = np.arange(step // 2, N, step)
+loss = df.ix[iterations]['loss']
 
 plt.plot(iterations, loss)
 plt.show()
