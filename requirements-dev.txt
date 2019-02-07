@@ -1,5 +1,6 @@
 -r requirements.txt
-hacking
+autopep8
+flake8
 ipdb
 ipython
 pycd
