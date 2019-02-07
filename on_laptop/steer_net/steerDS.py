@@ -10,13 +10,21 @@ from os import path
 
 class SteerDataSet(Dataset):
 
-    def __init__(self, root_folder, img_ext=".jpg", transform=None):
+    def __init__(
+        self,
+        root_folder,
+        img_ext='.jpg',
+        transform=None,
+        augment=False,
+    ):
         self.root_folder = root_folder
         self.transform = transform
         self.img_ext = img_ext
         self.filenames = sorted(
             glob(path.join(self.root_folder, "*" + self.img_ext)))
         self.totensor = transforms.ToTensor()
+
+        self._augment = augment
 
     def __len__(self):
         return len(self.filenames)
@@ -27,11 +35,6 @@ class SteerDataSet(Dataset):
         img = img[110:, :, :]
         img = cv2.resize(img, (84, 84))
 
-        if self.transform == None:
-            img = self.totensor(img)
-        else:
-            img = self.transform(img)
-
         base = osp.splitext(img_file)[0]
         txt_file = base + '.txt'
         with open(txt_file) as f:
@@ -40,10 +43,21 @@ class SteerDataSet(Dataset):
         # steering = filename.split("/")[-1].split(self.img_ext)[0][6:]
         steering = np.float32(steering)
 
+        if self._augment:
+            flip = np.random.random() >= 0.5
+            if flip:
+                img = np.ascontiguousarray(img[:, ::-1, :])
+                steering *= -1
+
         # 11 class classification
         # -0.5, -0.4, -0.3, ... 0, ..., 0.5
         assert -0.5 <= steering <= 0.5
         steering_class = ((steering + 0.5) * 10).round().astype(np.int64)
+
+        if self.transform == None:
+            img = self.totensor(img)
+        else:
+            img = self.transform(img)
 
         sample = {
             "image": img,

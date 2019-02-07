@@ -5,7 +5,7 @@ from steer_net.steerDS import SteerDataSet
 import cv2
 
 
-dataset = SteerDataSet('dev_data/training_data', '.jpg')
+dataset = SteerDataSet('./dev_data/training_data', augment=True)
 print(f'Datset Size: {len(dataset)}')
 for index, data in enumerate(dataset):
     print(f"Index: {index}, Steering: {data['steering']:.3f}, "
