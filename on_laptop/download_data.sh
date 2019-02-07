@@ -17,9 +17,11 @@ fi
 
 echo_bold "==> Downloading data from penguinpi"
 if [ "$1" = "train" ]; then
-  scp penguinpi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/* dev_data/training_data/
+  scp penguinpi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/*.txt dev_data/training_data/
+  scp penguinpi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/*.jpg dev_data/training_data/
 elif [ "$1" = "test" ]; then
-  scp penguinpi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/* dev_data/testing_data/
+  scp penguinpi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/*.txt dev_data/testing_data/
+  scp penguinpi:/home/pi/RVSS2019-WS/on_robot/collect_data/data/*.jpg dev_data/testing_data/
 else
   usage
   exit 1
