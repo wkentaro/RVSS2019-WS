@@ -41,7 +41,10 @@ cd RVSS2019-WS/on_robot/deploy
 python3 deploy0.py
 ```
 
-## Demonstration
+## Results @RVSS2019
 
-![](https://drive.google.com/uc?id=1HeFbIt5IYjYVx5STlqUhrjRhwt0eod4N)
-![](https://drive.google.com/uc?id=1HrMMVy4Gxe941yv6Kk4cYbStn387tpha)
+Out team, East Asia, got 2nd award at RVSS2019.
+
+<img src=".readme/award_team.jpg" width="35%" /> <img src=".readme/award_certificate.jpg" width="63%" />
+<img src="https://drive.google.com/uc?id=1HeFbIt5IYjYVx5STlqUhrjRhwt0eod4N" width="49%" />
+<img src="https://drive.google.com/uc?id=1HrMMVy4Gxe941yv6Kk4cYbStn387tpha" width="49%" />
